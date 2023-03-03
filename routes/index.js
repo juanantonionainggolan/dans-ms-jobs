@@ -16,9 +16,9 @@ router.get('/token', refreshToken);
 
 router.delete('/logout', Logout);
 
-router.get('/jobs', getJobs);
+router.get('/jobs', verifyToken, getJobs);
 
-router.get('/job/:id', getJob);
+router.get('/job/:id', verifyToken, getJob);
 
 
 export default router;
