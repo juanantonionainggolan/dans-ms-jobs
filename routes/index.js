@@ -1,6 +1,6 @@
 import express from "express";
 import { getUsers, Register, Login, Logout } from "../controller/Users.js";
-import { getJobs } from "../controller/Jobs.js";
+import { getJobs, getJob } from "../controller/Jobs.js";
 import { verifyToken } from "../middleware/VerifyToken.js";
 import { refreshToken } from "../controller/RefreshToken.js";
 
@@ -17,6 +17,8 @@ router.get('/token', refreshToken);
 router.delete('/logout', Logout);
 
 router.get('/jobs', getJobs);
+
+router.get('/job/:id', getJob);
 
 
 export default router;

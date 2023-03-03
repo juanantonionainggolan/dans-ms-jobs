@@ -35,3 +35,24 @@ export const getJobs = async (req, res) => {
       
 }
 
+export const getJob = async (req, res) => {
+    const id = req.params.id
+    const options = {
+        'method': 'get',
+        'url': `http://dev3.dansmultipro.co.id/api/recruitment/positions/${id}`,
+        'headers': {
+          'Content-Type': 'application/json'
+        }
+      };
+      console.log(options)
+    
+      try {
+        const result = await axios(options);
+        // console.log(result.data);
+         return await res.send(result.data);
+      } catch (e) {
+           console.log(e);
+      }
+      
+}
+
