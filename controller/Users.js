@@ -15,13 +15,13 @@ export const getUsers = async (req, res) => {
 
 export const Register = async (req,res) => {
     const {name, email, password, confPassword} = req.body;
-    if (password !== confPassword) return response.status(400).json({ msg: "Password didn't match with Confirm Password"})
+    if (password !== confPassword) return res.status(400).json({ msg: "Password didn't match with Confirm Password"})
     const salt = await bcrypt.genSalt();
-    const hashPassoword = await bcrypt.hash(password, salt);
+    const hashPassword = await bcrypt.hash(password, salt);
 
     try {
         await Users.create({
-            name, email, password:hashPassoword
+            name, email, password:hashPassword
         });
 
         res.json({ msg: "Successfully registered"})
@@ -74,7 +74,7 @@ export const Logout = async (req, res) => {
 
         if (!refreshToken) return res.sendStatus(204);
 
-        const user = await User.findAll({
+        const user = await Users.findAll({
             where: {
                 refresh_token: refreshToken
             }
@@ -90,7 +90,7 @@ export const Logout = async (req, res) => {
             }
         });
 
-        res.clearCookies('refreshToken');
+        res.clearCookie('refreshToken');
 
         return res.sendStatus(200);
 }
