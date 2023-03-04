@@ -1,5 +1,5 @@
-import User from "../models/UserModel.js"
-import jwt from "jsonwebtoken"
+import User from "../models/UserModel.js";
+import jwt from "jsonwebtoken";
 
 export const refreshToken = async (req, res) => {
     try {
@@ -23,11 +23,11 @@ export const refreshToken = async (req, res) => {
             const userEmail = user[0].email;
             const accessToken = jwt.sign({userId, userName, userEmail}, process.env.ACCESS_TOKEN_SECRET, {
                 expiresIn: '15s'
-            })
+            });
 
-            res.json({ accessToken })
+            res.json({ accessToken });
         })
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }

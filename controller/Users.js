@@ -1,15 +1,16 @@
-import Users from "../models/UserModel.js"
-import bcrypt from "bcrypt"
-import jwt from "jsonwebtoken"
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import Users from "../models/UserModel.js";
 
 export const getUsers = async (req, res) => {
     try {
         const users = await Users.findAll({
             attributes:['id', 'name', 'email']
         });
-        res.json(users)
+
+        res.json(users);
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 }
 
@@ -24,7 +25,7 @@ export const Register = async (req,res) => {
             name, email, password:hashPassword
         });
 
-        res.json({ msg: "Successfully registered"})
+        res.json({ msg: "Successfully registered"});
     } catch (error) {
         console.log(error);
     }
@@ -46,24 +47,24 @@ export const Login = async (req, res) => {
         const userEmail = user[0].email;
         const accessToken = jwt.sign({ userId, userName, userEmail}, process.env.ACCESS_TOKEN_SECRET, {
             expiresIn: '20s',
-        })
+        });
 
         const refreshToken = jwt.sign({ userId, userName, userEmail}, process.env.REFRESH_TOKEN_SECRET, {
             expiresIn: '1d',
-        })
+        });
 
         await Users.update({ refresh_token: refreshToken }, {
             where: {
                 id:userId
             }
-        })
+        });
 
         res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             maxAge: 24 * 60 * 60 * 1000
-        })
+        });
 
-        res.json({ accessToken })
+        res.json({ accessToken });
     } catch (error) {
         res.status(404).json({ msg: "Email not found" });
     }
